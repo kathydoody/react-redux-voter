@@ -12,6 +12,8 @@ function getWinners(vote){
 
 }
 
+export const INITIAL_STATE = Map();
+
 export function setEntries(state, entries){
     return state.set('entries', List(entries));
 }
@@ -20,10 +22,18 @@ export function next(state) {
     // puts the winner back into list (on tie - adds both)
     const entries = state.get('entries')
                          .concat(getWinners(state.get('vote')));
-    return state.merge({
-        vote: Map({pair: entries.take(2)}),
-        entries: entries.skip(2)
-    });
+
+    if(entries.size === 1){
+        return state.remove('vote')
+                    .remove('entries')
+            .set('winner', entries.first());
+    } else {
+        return state.merge({
+            vote: Map({pair: entries.take(2)}),
+            entries: entries.skip(2)
+        });
+    }
+
 }
 export function vote(state, entry) {
     return state.updateIn(

@@ -87,7 +87,27 @@ describe('application logic', () => {
 
         });
 
-    });
+
+        it('marks winner when just one entry remains', () =>{
+            const state = Map({
+                vote: Map({
+                    pair: List.of('The Sound of Music', 'Star Wars'),
+                    tally: Map({
+                        'The Sound of Music': 3,
+                        'Star Wars': 1
+                    })
+                }),
+                entries: List()
+            });
+
+            const nextState = next(state);
+            expect(nextState).to.equal(Map({
+                winner: 'The Sound of Music'
+            }));
+
+        });
+
+    }); // end of next
 
     describe('vote', () => {
 
@@ -136,7 +156,7 @@ describe('application logic', () => {
 
         });
 
-    });
+    }); // end of vote
 
 
 });
