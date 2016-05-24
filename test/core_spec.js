@@ -44,6 +44,49 @@ describe('application logic', () => {
             }));
         });
 
+        it('puts the winner of current vote back to entries', () => {
+            const state = Map({
+                vote: Map({
+                    pair: List.of('The Sound of Music', 'Star Wars'),
+                    tally: Map({
+                        'The Sound of Music': 1,
+                        'Star Wars': 3
+                    })
+                }),
+                entries: List.of('Top Gun', 'Flashdance', 'Goonies')
+            });
+
+            const nextState = next(state);
+            expect(nextState).to.equal(Map({
+                vote: Map({
+                    pair: List.of('Top Gun', 'Flashdance')
+                }),
+                entries: List.of('Goonies', 'Star Wars')
+            }));
+        });
+
+        it('puts both from tied vote back to entries',() => {
+            const state = Map({
+                vote: Map({
+                    pair: List.of('The Sound of Music', 'Star Wars'),
+                    tally: Map({
+                        'The Sound of Music': 3,
+                        'Star Wars': 3
+                    })
+                }),
+                entries: List.of('Top Gun', 'Flashdance', 'Goonies')
+            });
+
+            const nextState = next(state);
+            expect(nextState).to.equal(Map({
+                vote: Map({
+                    pair: List.of('Top Gun', 'Flashdance')
+                }),
+                entries: List.of('Goonies', 'The Sound of Music', 'Star Wars')
+            }));
+
+        });
+
     });
 
     describe('vote', () => {
