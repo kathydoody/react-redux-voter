@@ -50,11 +50,29 @@ describe('reducer', () => {
     });
 
     it('has an initial state', () => {
-        const action = {type: 'SET_ENTRIES', entries: ['Trainspotting']};
+        const action = {type: 'SET_ENTRIES', entries: ['Star Wars']};
         const nextState = reducer(undefined, action);
         expect(nextState).to.equal(fromJS({
-            entries: ['Trainspotting']
+            entries: ['Star Wars']
         }));
+    });
+
+    it('can be used with reduce', () => {
+        const actions = [
+            {type: 'SET_ENTRIES', entries: ['Star Wars', 'Finding Nemo']},
+            {type: 'NEXT'},
+            {type: 'VOTE', entry: 'Finding Nemo'},
+            {type: 'VOTE', entry: 'Star Wars'},
+            {type: 'VOTE', entry: 'Finding Nemo'},
+            {type: 'NEXT'}
+        ];
+
+        const finalState = actions.reduce(reducer, Map());
+
+        expect(finalState).to.equal(fromJS({
+            winner: 'Finding Nemo'
+        }));
+
     });
 
 });

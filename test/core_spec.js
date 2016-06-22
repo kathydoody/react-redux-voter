@@ -113,45 +113,33 @@ describe('application logic', () => {
 
         it('creates a tally for the voted entry', () => {
             const state = Map({
-                vote: Map({
                     pair: List.of('The Sound of Music', 'Star Wars')
-                }),
-                entries: List()
             });
             const nextState = vote(state ,'The Sound of Music');
-            expect(nextState).to.equal(Map({
-                vote: Map({
+            expect(nextState).to.equal( Map({
                     pair: List.of('The Sound of Music', 'Star Wars'),
                     tally: Map({
                         'The Sound of Music': 1
                     })
-                }),
-                entries: List()
             }));
         });
 
         it('adds to existing tally for the voted entry', () => {
             const state = Map({
-                vote: Map({
                     pair: List.of('The Sound of Music', 'Star Wars'),
                     tally: Map({
                         'The Sound of Music': 1,
                         'Star Wars': 3
                     })
-                }),
-                entries: List()
             });
 
             const nextState = vote(state, 'The Sound of Music');
             expect(nextState).to.equal(Map({
-                vote: Map({
                     pair: List.of('The Sound of Music', 'Star Wars'),
                     tally: Map({
                         'The Sound of Music': 2,
                         'Star Wars': 3
                     })
-                }),
-                entries: List()
             }));
 
         });
